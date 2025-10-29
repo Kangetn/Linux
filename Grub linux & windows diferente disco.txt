@@ -1,0 +1,41 @@
+
+# 1. Instalar herramientas necesarias
+sudo pacman -S os-prober
+sudo pacman -S nano
+
+# 2. Configurar GRUB para detectar otros sistemas
+sudo nano /etc/default/grub
+# Agrega o descomenta la siguiente línea:
+GRUB_DISABLE_OS_PROBER=false
+
+# 3. Montar el disco de Windows
+sudo mkdir -p /mnt/win
+sudo fdisk -l
+# Para identificar tu disco exacto:
+sudo fdisk -l | grep "Disk /dev"
+# Monta el disco (ajusta /dev/sdb# según corresponda):
+sudo mount /dev/sdb# /mnt/win
+ls /mnt/win
+
+# 4. Añadir manualmente Windows al GRUB
+sudo nano /etc/grub.d/40_custom
+# Al final del archivo, agrega:
+menuentry "Windows 10" {
+    insmod part_msdos
+    insmod ntfs
+    set root='(hd0,msdos2)'
+    chainloader +1
+}
+
+# 5. Regenerar el menú de GRUB
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+# 6. Instalar GRUB en el disco donde está Arch Linux
+sudo grub-install --target=i386-pc /dev/nvm # Importante: en el disco completo, no en una partición
+sudo os-prober
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo reboot
+
+
+
+
