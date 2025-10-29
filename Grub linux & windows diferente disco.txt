@@ -26,7 +26,7 @@ menuentry "Windows 10" {
     set root='(hd0,msdos2)'
     chainloader +1
 }
-
+#Si carga el grub pero entras a windows y queda la pantalla en negro cambia el msdos2 a 1
 # 5. Regenerar el menú de GRUB
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
