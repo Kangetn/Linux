@@ -20,6 +20,8 @@ ls /mnt/win
 # 4. Añadir manualmente Windows al GRUB
 sudo nano /etc/grub.d/40_custom
 # Al final del archivo, agrega:
+#!/bin/sh
+exec tail -n +3 $0
 menuentry "Windows 10" {
     insmod part_msdos
     insmod ntfs
